@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="shortcut icon" href="./favicon.ico">
+  <style>
+    /* ---------------- Base & Layout ---------------- */
+    :root{
+      --bg:#f7f7fb; --fg:#1f2937; --muted:#6b7280; --card:#ffffff;
+      --brand:#0b63f6; --rule:#e5e7eb; --chip:#eef2ff; --chipfg:#1e3a8a;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:"Segoe UI", SegoeUI, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;color:var(--fg);background:var(--bg);line-height:1.6}
+    .wrap{max-width:980px;margin:48px auto;padding:32px;background:var(--card);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.06)}
+    h1{font-size:2.8em;margin-bottom:.75rem;color:#212529;font-weight:600}
+    h2{font-size:1.3em;margin:0 0 .5rem;font-weight:400;color:#6c757d}
+    .subtitle-title{font-size:1.8em;color:#111;font-weight:600;margin:0 0 .5rem}
+    .authors p{margin:0;font-size:.95em;color:#495057}
+    .authors .affils{font-size:.9em;color:#6c757d}
+    hr{border:0;border-top:1px solid var(--rule);margin:20px 0}
+
+    /* ---------------- Meta chips ---------------- */
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1.25rem}
+    .chip{background:var(--chip);color:var(--chipfg);padding:.25rem .6rem;border-radius:999px;font-size:.8rem}
+
+    /* ---------------- Metrics box ---------------- */
+    .metrics{background:#fbfbfe;border:1px solid var(--rule);border-radius:12px;padding:14px 16px;margin:8px 0 22px}
+    .metrics h3{margin:0 0 .5rem;font-size:1rem}
+    .metrics ul{margin:.25rem 0 0 1.1rem}
+
+    /* ---------------- Section (distance) ---------------- */
+    .section{padding:22px 0 8px}
+    .section h3{font-size:1.4em;margin:0 0 1rem;color:#0056b3 !important;font-weight:500}
+    .section .snr{margin:0;color:var(--muted)}
+
+    /* ---------------- Algorithm blocks ---------------- */
+    .algo{border:1px solid var(--rule);border-radius:12px;padding:14px 14px 8px;margin:14px 0}
+    .algo h4{margin:0 0 .25rem;font-size:1.05rem}
+    .algo small{color:var(--muted)}
+    .star{margin-left:.25rem} 
+
+    /* ---------------- Players grid ---------------- */
+    .players{display:grid;grid-template-columns:220px repeat(3,1fr);gap:.5rem 1rem;align-items:start;margin-top:.5rem}
+    .players .colhead{font-weight:700;color:#374151;text-align:center}
+    .row{display:grid;grid-template-columns:220px repeat(3,1fr);gap:.5rem 1rem;align-items:start;min-height:96px;margin-top:.25rem}
+    .row + .row{margin-top:6px}
+    .rowlabel{align-self:start}
+    .method .name{font-weight:600;margin-bottom:.25rem}
+    .mlines .metrics-line{font-size:.9rem;color:var(--muted);line-height:1.4}
+    audio{width:100%;height:38px;border-radius:4px}
+
+    /* ---------------- Footer note ---------------- */
+    .legend{font-size:.85rem;color:var(--muted);margin-top:10px}
+
+    /* ---------------- Small screens ---------------- */
+    @media (max-width:640px){
+      .wrap{margin:0;padding:16px;border-radius:0}
+      /* Keep 3 case columns on phones: enable horizontal scroll instead of stacking */
+      .section{overflow-x:auto}
+      .players, .row{min-width:820px; grid-template-columns:200px repeat(3, 200px)}
+    
+}
+  </style>
+</head>
+<body>
+  <main class="wrap" id="app">
+    <header>
+      <h1>Audio samples</h1>
+      <h2 class="subtitle-title">Semi‑Blind Source Separation for Unmanned Aerial Vehicle audition</h2>
+      <div class="authors">
+        <p>Jin Xuan Teh*, Norihiro Takamune†, Hiroshi Saruwatari†, Benjamin Yen*, Michael Kingan* &amp; Yusuke Hioka*</p>
+        <p class="affils">* Acoustics &amp; Vibration Research Centre, University of Auckland, Auckland, NZ</p>
+        <p class="affils">† The University of Tokyo, Tokyo, Japan</p>
+        <p class="affils">‡ Tokyo Institute of Technology, Tokyo, Japan</p>
+      </div>
+      
+      <section class="metrics">
+        <h3>Metrics</h3>
+        <ul>
+          <li><strong>SDRi</strong>: source‑to‑distortion ratio improvement</li>
+          <li><strong>STOIi</strong>: short‑time objective intelligibility improvement</li>
+        </ul>
+      </section>
+    </header>
+
+    <!-- Sections are injected by JS below to avoid repeating markup.  -->
+  </main>
+
+  <script>
+    // —— CONFIGURATION ——
+    // Folder holding audio. Kept as path segments to safely URL‑encode spaces.
+    const ROOT = ["audio samples"]; // must exist next to this HTML file
+    const distances = {
+      "3m": {
+        snr: "-19±0.2 dB",
+        cases: [1,2,3],
+        metrics: {
+          "silrma": { SDRi: "13±0.2 dB", STOIi: "0.22±0.004", best: "STOI" },
+          "silrma-RCSCME": { SDRi: "17±0.3 dB", STOIi: "0.18±0.005" },
+          "silrma-WF": { SDRi: "18±0.3 dB", STOIi: "0.19±0.004", best: "SDR" }
+        }
+      },
+      "5m": {
+        snr: "-23±0.3 dB",
+        cases: [1,2,3],
+        metrics: {
+          "silrma": { SDRi: "11±0.2 dB", STOIi: "0.20±0.003", best: "STOI" },
+          "silrma-RCSCME": { SDRi: "14±0.3 dB", STOIi: "0.15±0.003" },
+          "silrma-WF": { SDRi: "16±0.4 dB", STOIi: "0.18±0.003", best: "SDR" }
+        }
+      }
+    };
+
+    // Display order & labels by algorithm key (file stem after distance_)
+    const ALGOS = [
+      { key: "input", label: "Input" },
+      { key: "silrma", label: "Supervised ILRMA" },
+      { key: "silrma-RCSCME", label: "Supervised ILRMA + RCSCME" },
+      { key: "silrma-WF", label: "Supervised ILRMA + WF" }
+    ];
+
+    // —— HELPERS ——
+    const enc = s => encodeURIComponent(s);
+    const joinPath = segs => segs.map(enc).join('/');
+    function filePath(distance, algoKey, idx){
+      const fname = `${distance}_${algoKey}_${idx}.wav`;
+      return joinPath([...ROOT, distance, fname]);
+    }
+    function methodInfo(key, d){
+      if(key === 'input'){
+        return `<div class="mlines"><div class="metrics-line"><strong>SNR:</strong> ${distances[d].snr}</div></div>`;
+      }
+      const m = distances[d].metrics?.[key];
+      if(!m) return '';
+      const sdrStar  = m.best === 'SDR'  ? '<span class="star">⭐</span>' : '';
+      const stoiStar = m.best === 'STOI' ? '<span class="star">⭐</span>' : '';
+      return `<div class="mlines">
+                <div class="metrics-line"><strong>SDRi:</strong> ${m.SDRi}${sdrStar}</div>
+                <div class="metrics-line"><strong>STOIi:</strong> ${m.STOIi}${stoiStar}</div>
+              </div>`;
+    }
+
+    // —— RENDER ——
+    const app = document.getElementById('app');
+    for(const d of Object.keys(distances)){
+      const sec = document.createElement('section');
+      sec.className = 'section';
+      sec.innerHTML = `
+        <h3>80 dBA speech loudness from a <strong>${d.replace('m','')} m</strong> distance</h3>
+      `;
+
+      // Header grid: blank + case headers
+      const headGrid = document.createElement('div');
+      headGrid.className = 'players';
+      const blank = document.createElement('div');
+      blank.className = 'colhead';
+      blank.innerHTML = '&nbsp;';
+      headGrid.appendChild(blank);
+      for(const i of distances[d].cases){
+        const head = document.createElement('div');
+        head.className = 'colhead';
+        head.textContent = `Case ${i}`;
+        headGrid.appendChild(head);
+      }
+      sec.appendChild(headGrid);
+
+      // Method rows: separate equal-height grids per algorithm
+      for(const a of ALGOS){
+        const row = document.createElement('div');
+        row.className = 'row';
+
+        const left = document.createElement('div');
+        left.className = 'rowlabel';
+        left.innerHTML = `<div class="method"><div class="name">${a.label}</div>${methodInfo(a.key, d)}</div>`;
+        row.appendChild(left);
+
+        for(const i of distances[d].cases){
+          const src = filePath(d, a.key, i);
+          const cell = document.createElement('div');
+          const audio = document.createElement('audio');
+          audio.setAttribute('controls','');
+          audio.setAttribute('preload','none');
+          audio.setAttribute('src', src);
+          audio.setAttribute('aria-label', `${a.label} — ${d} — case ${i}`);
+          cell.appendChild(audio);
+          row.appendChild(cell);
+        }
+
+        sec.appendChild(row);
+      }
+
+      const legend = document.createElement('p');
+      legend.className = 'legend';
+      legend.innerHTML = '⭐ marks the best value (per distance) for that metric.';
+      sec.appendChild(legend);
+
+      app.appendChild(sec);
+      app.appendChild(document.createElement('hr'));
+    }
+  </script>
+</body>
+</html>
